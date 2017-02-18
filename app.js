@@ -3,15 +3,24 @@ const cancelEle = document.getElementById('cancel')
 const dateEle = document.getElementById('datepicker')
 const timeEle = document.getElementById('time')
 const messageEle = document.getElementById('confirmation')
+const datepicker = DatePicker({
+  input: document.getElementById('datepicker'),
+  onSet: updateTime
+})
+const timepicker = TimePicker({
+  select: document.getElementById('timepicker')
+})
+
 
 save.addEventListener('click', () => {
-  const date = dateEle.value
-  const time = timeEle.options[timeEle.selectedIndex].text
+  const date = datepicker.get('value')
+  const time =  timepicker.get('value')
   messageEle.innerText = `Good! Your appointment is set for ${date} at ${time}. Thanks!`
 })
 
 cancel.addEventListener('click', () => {
-  dateEle.value = ''
+  datepicker.clear()
+  timepicker.reset()
   messageEle.innerText = ''
 })
 
@@ -21,8 +30,8 @@ function getFilter() {
 }
 
 function filterCalendar(ev) {
-  const weekend = ev.target.getAttribute('data-weekend') === 'true'
-  showCalendar(weekend)
+  const weekend = getFilter()
+  datepicker.set('weekend', weekend)
 }
 
 const radioBtns = document.querySelectorAll('input[name="filter"]')
@@ -33,23 +42,17 @@ radioBtns.forEach((radioBtn) => {
 function showCalendar(filter) {
   const weekend = filter ? filter : getFilter();
 
-  DatePicker({
-    input: document.getElementById('datepicker'),
-    weekend,
-    onSelect: (date) => {
-      const newDate = new Date()
-      if(date.toDateString() === newDate.toDateString()) {
-        TimePicker({
-          from: [newDate.getHours(), (Math.ceil(newDate.getMinutes() / 15) * 15) % 60]
-        })
-      } else {
-        TimePicker()
-      }
-    }
-  })
+  datepicker.open()
+}
+
+function updateTime(date) {
+  const today = new Date()
+  if(date.toDateString() === today.toDateString()) {
+    timepicker.set('from', [today.getHours(), today.getMinutes()])
+  } else {
+    timepicker.reset()
+  }
 }
 
 const datePickerBtn = document.getElementById('select-date')
 datePickerBtn.addEventListener('click', () => showCalendar())
-
-TimePicker()
