@@ -2,7 +2,7 @@ var finalhandler = require('finalhandler')
 var http = require('http')
 var serveStatic = require('serve-static')
 
-// Serve up public/ftp folder
+// Serve up static folder
 var serve = serveStatic('src', {'index': 'index.html'})
 
 // Create server
