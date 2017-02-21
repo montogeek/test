@@ -7,13 +7,17 @@ const datePickerInput = document.getElementById('datepicker')
 
 const datepickerIns = DatePicker({
   input: document.getElementById('datepicker'),
-  onSet: updateTime
+  onSet: updateTimePicker
 })
+
 const timepickerIns = TimePicker({
   select: document.getElementById('timepicker')
 })
 
-function updateTime(date) {
+/**
+ * Updates timepicker setting `from`
+ */
+function updateTimePicker(date) {
   const today = new Date()
   if(date.toDateString() === today.toDateString()) {
     timepickerIns.set('from', [today.getHours(), today.getMinutes()])
@@ -22,11 +26,18 @@ function updateTime(date) {
   }
 }
 
+/**
+ * Returns calendar filter from radio buttons
+ * @return {boolean}
+ */
 function getFilter() {
   const filterBtn = document.querySelectorAll('input[name="filter"]:checked')
   return filterBtn[0].getAttribute('data-weekend') ? filterBtn[0].getAttribute('data-weekend') === 'true' : null
 }
 
+/**
+ * Set datepicker filter
+ */
 function filterCalendar(ev) {
   const weekend = getFilter()
   datepickerIns.set('weekend', weekend)

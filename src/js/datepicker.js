@@ -1,3 +1,9 @@
+/**
+ * DatePicker
+ * @param {Node} input Input element
+ * @param {onSet} function Function called when a date is selected
+ * @return {Object}
+ */
 const DatePicker = ({ input, onSet }) => {
   const locale = 'en-us'
   let selectedDate = new Date()
@@ -5,77 +11,42 @@ const DatePicker = ({ input, onSet }) => {
   const containerEle = document.getElementById('calendar')
   containerEle.classList.add('absolute')
 
+  /**
+   * Get year in numeric (2017) format
+   * @param {Date} date Date
+   * @param {string} locale BCP 47 language tag
+   * @return {integer} Year
+   */
   function getYear(date, locale) {
     return date.toLocaleString(locale, { year: "numeric" })
   }
 
+  /**
+   * Get month in long (Feb) format
+   * @param {Date} date Date
+   * @param {string} locale BCP 47 language tag
+   * @return {integer} Month name
+   */
   function getMonthName(date, locale) {
     return date.toLocaleString(locale, { month: "long" })
   }
 
+  /**
+   * Get day name in short (Mon) format
+   * @param {Date} date Date
+   * @param {string} locale BCP 47 language tag
+   * @return {integer} Day name
+   */
   function getDayName(date, locale) {
     return date.toLocaleString(locale, { weekday: "short" })
   }
 
-  function renderWeek(week, input, date) {
-
-    const tr = document.createElement('tr')
-
-    week.forEach((day) => {
-      const td = document.createElement('td')
-      td.innerText = day.day
-      td.classList.add('pa2')
-      td.classList.add('tc')
-
-      if(day.selectable) {
-        td.classList.add('pointer')
-        td.addEventListener('click', (ev) => {
-          input.value = getFormattedDate(day.date)
-          currentDate = selectedDate = day.date
-          onSet(day.date)
-          close()
-        })
-      } else {
-        td.classList.add('disabled')
-        td.addEventListener('click', () => {})
-      }
-
-      if(day.selected) {
-        td.classList.add('selected')
-      }
-
-      tr.appendChild(td)
-    })
-
-    return tr
-  }
-
-  function renderBody(month, input, date) {
-    const tbody = document.createElement('tbody')
-    month.forEach((week) => {
-      tbody.appendChild(renderWeek(week, input, date))
-    })
-
-    return tbody
-  }
-
-  function renderWeekDays(weekDays) {
-    const thead = document.createElement('thead')
-    const tr = document.createElement('tr')
-
-    weekDays.forEach((day) => {
-      const td = document.createElement('td')
-      td.innerText = day
-      td.classList.add('pa1')
-
-      tr.appendChild(td)
-    })
-
-    thead.appendChild(tr)
-
-    return thead
-  }
-
+  /**
+   * Returns previous or next date
+   * @param {Date} date Date
+   * @param {string} direction Previous or next month
+   * @return {Date} Previous or next month date
+   */
   function getMonthDate(date, direction) {
     const dates = {
       'next': (date) => {
@@ -99,58 +70,35 @@ const DatePicker = ({ input, onSet }) => {
     return dates[direction](date)
   }
 
-  function renderButton(date, direction, input, weekend) {
-    const button = document.createElement('button')
-    const icon = document.createElement('img')
-    icon.src = `icons/${direction}.svg`
-
-    button.id = direction
-    button.classList.add('pointer')
-    button.classList.add('b--none')
-    button.classList.add('bg-transparent')
-    button.classList.add('pa0')
-    button.appendChild(icon)
-    button.addEventListener('click', () => render({ date: getMonthDate(date, direction), input, weekend }))
-
-    return button
-  }
-
+  /**
+   * Returns user friendly date
+   * @param {Date} date Date
+   * @return {string} Formatted date
+   */
   function getFormattedDate(date) {
-    const year = date.getFullYear();
+    const year = date.getFullYear()
 
-    let month = (1 + date.getMonth()).toString();
-    month = month.length > 1 ? month : '0' + month;
+    let month = (1 + date.getMonth()).toString()
+    month = month.length > 1 ? month : '0' + month
 
-    let day = date.getDate().toString();
-    day = day.length > 1 ? day : '0' + day;
+    let day = date.getDate().toString()
+    day = day.length > 1 ? day : '0' + day
 
-    return month + '/' + day + '/' + year;
+    return month + '/' + day + '/' + year
   }
 
-  function renderHeader(date, input, weekend) {
-    const html = document.createElement('div')
-    html.classList.add('flex')
-    html.classList.add('justify-between')
-    html.classList.add('mb1')
-    html.classList.add('pa1')
-
-    const span = document.createElement('span')
-    span.innerText = `${getMonthName(date)} ${getYear(date)}`
-    span.id = 'month'
-
-    html.appendChild(renderButton(date, 'prev', input, weekend))
-    html.appendChild(span)
-    html.appendChild(renderButton(date, 'next', input, weekend))
-
-    return html
-  }
-
-  function render({ date = currenDate, input, weekend = null } = {}) {
+  /**
+   * Returns a matrix with current month data
+   * @param {Date} date Date
+   * @param {boolean} weekend Weekend filter
+   * @return {Array[]} Month data
+   */
+  function createMonthData(date, weekend) {
     const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1)
     const currentMonth = firstDayOfMonth.getMonth()
     const firstDayOfWeek = new Date(firstDayOfMonth.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay()))
 
-    const month = Array.from({ length: 6 }).map(() => {
+    return Array.from({ length: 6 }).map(() => {
       return Array.from({ length: 7 }).map(() => {
         const dayDate = new Date(firstDayOfWeek)
         const day = firstDayOfWeek.getDate()
@@ -184,6 +132,143 @@ const DatePicker = ({ input, onSet }) => {
         }
       })
     })
+  }
+
+  /**
+   * Returns a week row, a <tr> Node
+   * @param {Array} week Array of days
+   * @param {Node} input Input element
+   * @return {Node[]} Week
+   */
+  function renderWeek(week, input) {
+
+    const tr = document.createElement('tr')
+
+    week.forEach((day) => {
+      const td = document.createElement('td')
+      td.innerText = day.day
+      td.classList.add('pa2')
+      td.classList.add('tc')
+
+      if(day.selectable) {
+        td.classList.add('pointer')
+        td.addEventListener('click', (ev) => {
+          input.value = getFormattedDate(day.date)
+          currentDate = selectedDate = day.date
+          onSet(day.date)
+          close()
+        })
+      } else {
+        td.classList.add('disabled')
+        td.classList.add('gray0')
+        td.addEventListener('click', () => {})
+      }
+
+      if(day.selected) {
+        td.classList.add('selected')
+      }
+
+      tr.appendChild(td)
+    })
+
+    return tr
+  }
+
+  /**
+   * Returns calendar body, a <tbody> Node
+   * @param {Array} month Array of weeks
+   * @param {Node} input Input element
+   * @return {Node[]} Month
+   */
+  function renderBody(month, input) {
+    const tbody = document.createElement('tbody')
+    month.forEach((week) => {
+      tbody.appendChild(renderWeek(week, input))
+    })
+
+    return tbody
+  }
+
+  /**
+   * Returns weekdays row, a <thead> Node
+   * @param {Array} weekDays Array of days name
+   * @return {Node[]} Week days
+   */
+  function renderWeekDays(weekDays) {
+    const thead = document.createElement('thead')
+    const tr = document.createElement('tr')
+
+    weekDays.forEach((day) => {
+      const td = document.createElement('td')
+      td.innerText = day
+      td.classList.add('pa1')
+
+      tr.appendChild(td)
+    })
+
+    thead.appendChild(tr)
+
+    return thead
+  }
+
+  /**
+   * Returns prev or next button to navigate between months
+   * @param {Date} date Date
+   * @param {string} direction Previous or next month
+   * @param {Node} input Input element
+   * @param {boolean} weekend Weekend filter
+   * @return {Node} Button
+   */
+  function renderButton(date, direction, input, weekend) {
+    const button = document.createElement('button')
+    const icon = document.createElement('img')
+    icon.src = `icons/${direction}.svg`
+
+    button.id = direction
+    button.classList.add('pointer')
+    button.classList.add('b--none')
+    button.classList.add('bg-transparent')
+    button.classList.add('pa0')
+    button.appendChild(icon)
+    button.addEventListener('click', () => render({ date: getMonthDate(date, direction), input, weekend }))
+
+    return button
+  }
+
+  /**
+   * Returns calendar header, a <div> Node
+   * @param {Date} date Date
+   * @param {Node} input Input element
+   * @param {boolean} weekend Weekend filter
+   * @return {Node} Header HTML
+   */
+  function renderHeader(date, input, weekend) {
+    const html = document.createElement('div')
+    html.classList.add('flex')
+    html.classList.add('justify-between')
+    html.classList.add('mb1')
+    html.classList.add('pa1')
+
+    const span = document.createElement('span')
+    span.innerText = `${getMonthName(date)} ${getYear(date)}`
+    span.id = 'month'
+
+    html.appendChild(renderButton(date, 'prev', input, weekend))
+    html.appendChild(span)
+    html.appendChild(renderButton(date, 'next', input, weekend))
+
+    return html
+  }
+
+  /**
+   * Returns a calendar
+   * @param {Date} date Date, defaults to current date
+   * @param {Node} input Input element
+   * @param {boolean} weekend Weekend filter
+   * @return {Node} Calendar HTML
+   */
+  function render({ date = currenDate, input, weekend = null } = {}) {
+    const month = createMonthData(date, weekend)
 
     const weekDays = Array.from({ length: 7 }).map((week, i) => {
       const newDate = new Date(date.getDate() - date.getDay())
@@ -198,7 +283,7 @@ const DatePicker = ({ input, onSet }) => {
     calendar.cellSpacing = 0
 
     calendar.appendChild(renderWeekDays(weekDays))
-    calendar.appendChild(renderBody(month, input, date))
+    calendar.appendChild(renderBody(month, input))
 
     const container = document.createElement('div')
     container.classList.add('ba')
