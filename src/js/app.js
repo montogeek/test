@@ -44,8 +44,8 @@ function filterCalendar(ev) {
 }
 
 save.addEventListener('click', () => {
-  const date = datepickerIns.get('value')
-  const time =  timepickerIns.get('value')
+  const date = datepickerIns.get()
+  const time =  timepickerIns.get()
   messageEle.innerText = `Good! Your appointment is set for ${date} at ${time}. Thanks!`
 })
 

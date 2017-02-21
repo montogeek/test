@@ -303,31 +303,51 @@ const DatePicker = ({ input, onSet }) => {
     containerEle.appendChild(container)
   }
 
+  /**
+   * Hides calendar
+   */
   function close() {
     containerEle.classList.add('dn')
     containerEle.classList.remove('db')
   }
 
+  /**
+   * Reset current values
+   */
   function clear() {
     input.value = ''
     currenDate = new Date()
     selectedDate = new Date()
   }
 
+  /**
+   * Set an option
+   * @param {string} option Option to set
+   * @param {array} value New value for option
+   */
   function set(option, value) {
     return render({ [option]: value, input })
   }
 
+  /**
+   * Get current selected date
+   */
   function get() {
     return getFormattedDate(selectedDate)
   }
 
+  /**
+   * Shows calendar
+   */
   function open() {
     containerEle.classList.add('db')
     containerEle.classList.remove('dn')
     return render({ input: input })
   }
 
+  /**
+   * Close calendar if clicked outside of the calendar
+   */
   document.addEventListener('click', (ev) => {
     const target = ev.target
 
