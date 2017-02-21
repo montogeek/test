@@ -5,12 +5,14 @@
   "description": "Huge Freelance test",
   "scripts": {
     "test": "./node_modules/.bin/nightwatch",
-    "start": "./node_modules/.bin/http-server src"
+    "start": "node serve.js"
   },
   "author": "Fernando Montoya <montogeek@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.9.0",
-    "nightwatch": "^0.9.12"
+    "connect": "3.6.0",
+    "finalhandler": "1.0.0",
+    "nightwatch": "0.9.12",
+    "serve-static": "1.11.2"
   }
 }

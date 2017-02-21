@@ -6,6 +6,9 @@ module.exports = {
     page = browser.page.appointment()
     page.navigate()
   },
+  after: function(browser) {
+    browser.end()
+  },
   'Should display all time intervals': function(browser) {
     browser.elements('css selector', page.elements.timepicker.selector + '> option', function(res) {
       this.assert.equal(res.value.length, allOptionsLength)

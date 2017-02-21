@@ -5,9 +5,8 @@ module.exports = {
     page = browser.page.appointment()
     page.navigate()
   },
-  after: function(browser, done) {
+  after: function(browser) {
     browser.end()
-    done()
   },
   beforeEach: function(browser) {
     browser.refresh()
@@ -17,10 +16,9 @@ module.exports = {
     page.expect.element('@calendar').to.be.visible
   },
   'Should display current date selected': function(browser) {
-    const currentDate = `${page.elements.calendar.selector} table > tbody td.selected`
     page.click('@datepicker')
 
-    page.expect.element(currentDate).to.be.present
+    page.expect.element('@currentDate').to.be.present
   },
   'Should be able to select date': function(browser) {
     const date = `${page.elements.calendar.selector} table > tbody > tr:nth-child(4) > td:nth-child(5)`

@@ -31,6 +31,9 @@ module.exports = {
     calendar: {
       selector: '#calendar'
     },
+    currentDate: {
+      selector: '#calendar table > tbody td.selected'
+    },
     nextBtn: {
       selector: '#next'
     },
