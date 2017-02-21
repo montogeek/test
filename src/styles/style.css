@@ -1,0 +1,232 @@
+:root {
+  /* https://palx.jxnblk.com/07c */
+  --blue0: #e4f0f9;
+  --blue1: #c6e1f3;
+  --blue4: #a5cfed;
+  --black-70: #3d3f41;
+  --white: #ffffff;
+  --gray-0: #dddddd;
+  --gray-1: #5f6e78;
+}
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.black-70 {
+  color: var(--black-70);
+}
+
+.b--blue4 {
+  border-color: var(--blue4);
+}
+
+.bg-blue0 {
+  background-color: var(--blue0);
+}
+
+.relative {
+  position: relative;
+}
+
+.t2 {
+  top: 2rem;
+}
+
+.ba {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.bg-gray0 {
+  background-color: var(--gray-0);
+}
+
+.b--gray0 {
+  border-color: var(--gray-0);
+}
+
+.bg-blue1 {
+  background-color: var(--blue1);
+}
+
+.gray1 {
+  color: var(--gray-1);
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.bg-white {
+  background-color: var(--white);
+}
+
+.pa1 {
+  padding: .25rem;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+.b--solid {
+  border-style: solid;
+}
+
+.b--blue0 {
+  border-color: var(--blue0);
+}
+
+.shadow-4 {
+  box-shadow: 2px 2px 8px 0px rgba( 0, 0, 0, 0.2 );
+}
+
+.pa0 {
+  padding: 0;
+}
+
+.pa4 {
+  padding: 2rem;
+}
+
+.pa3 {
+  padding: 1rem;
+}
+
+.ph3 {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.pv4 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.pv2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.ph2 {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.pa2 {
+  padding: 0.5rem;
+}
+
+.ml3 {
+  margin: 1rem;
+}
+
+.ma3 {
+  margin: 1rem;
+}
+
+.mt0 {
+  margin-top: 0;
+}
+
+.f5 {
+  font-size: 1rem;
+}
+
+.tc {
+  text-align: center;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.dn {
+  display: none;
+}
+
+.db {
+  display: block;
+}
+
+.debug *{outline:1px solid gold}
+
+.mb1 {
+  margin-bottom: .25rem;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+.mw50 {
+  max-width: 50rem;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.bn {
+  border-style: none;
+  border-width: 0;
+}
+
+.b--none {
+  border-style: none
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.disabled {
+  user-select: none;
+  cursor: not-allowed;
+  color: var(--gray-0);
+}
+
+.br4 {
+  border-radius: 1rem;
+}
+
+/**
+ * Calendar styles
+ */
+.dt--fixed {
+  table-layout: fixed;
+}
+
+.selected {
+  background-color: var(--blue0);
+}
+
+@media screen and (min-width: 60em) {
+  .flex-row-l {
+    flex-direction: row;
+  }
+
+  .items-baseline-l {
+    align-items: baseline;
+  }
+
+  .w-300-l {
+    width: 300px;
+  }
+}
